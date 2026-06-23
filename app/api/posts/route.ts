@@ -31,11 +31,13 @@ const MOCK_PHOTOS = [
     photographer_url: "https://www.pexels.com",
     alt: "Beautiful starry night sky over mountain peaks.",
     src: {
-      large2x: "https://images.pexels.com/photos/1252869/pexels-photo-1252869.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      small: "https://images.pexels.com/photos/1252869/pexels-photo-1252869.jpeg?auto=compress&cs=tinysrgb&w=150"
+      large2x:
+        "https://images.pexels.com/photos/1252869/pexels-photo-1252869.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      small:
+        "https://images.pexels.com/photos/1252869/pexels-photo-1252869.jpeg?auto=compress&cs=tinysrgb&w=150",
     },
     width: 940,
-    height: 650
+    height: 650,
   },
   {
     id: 2,
@@ -43,11 +45,13 @@ const MOCK_PHOTOS = [
     photographer_url: "https://www.pexels.com",
     alt: "Vibrant neon-lit urban street alleyway at midnight.",
     src: {
-      large2x: "https://images.pexels.com/photos/161963/chicago-illinois-skyline-skyscraper-161963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      small: "https://images.pexels.com/photos/161963/chicago-illinois-skyline-skyscraper-161963.jpeg?auto=compress&cs=tinysrgb&w=150"
+      large2x:
+        "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      small:
+        "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=150",
     },
     width: 940,
-    height: 650
+    height: 650,
   },
   {
     id: 3,
@@ -55,12 +59,14 @@ const MOCK_PHOTOS = [
     photographer_url: "https://www.pexels.com",
     alt: "Cinematic foggy pine forest path.",
     src: {
-      large2x: "https://images.pexels.com/photos/4827/nature-forest-trees-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      small: "https://images.pexels.com/photos/4827/nature-forest-trees-fog.jpg?auto=compress&cs=tinysrgb&w=150"
+      large2x:
+        "https://images.pexels.com/photos/4827/nature-forest-trees-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      small:
+        "https://images.pexels.com/photos/4827/nature-forest-trees-fog.jpg?auto=compress&cs=tinysrgb&w=150",
     },
     width: 940,
-    height: 650
-  }
+    height: 650,
+  },
 ];
 
 const MOCK_VIDEOS = [
@@ -68,36 +74,38 @@ const MOCK_VIDEOS = [
     id: 1,
     user: {
       name: "Nature Clips",
-      url: "https://www.pexels.com"
+      url: "https://www.pexels.com",
     },
-    image: "https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg?auto=compress&cs=tinysrgb&w=650",
+    image:
+      "https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg?auto=compress&cs=tinysrgb&w=650",
     video_files: [
       {
         link: "https://videos.pexels.com/video-files/2499611/2499611-hd_1920_1080_24fps.mp4",
         file_type: "video/mp4",
-        quality: "hd"
-      }
+        quality: "hd",
+      },
     ],
     width: 1920,
-    height: 1080
+    height: 1080,
   },
   {
     id: 2,
     user: {
       name: "Urban Explorer",
-      url: "https://www.pexels.com"
+      url: "https://www.pexels.com",
     },
-    image: "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=650",
+    image:
+      "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=650",
     video_files: [
       {
         link: "https://videos.pexels.com/video-files/853800/853800-hd_1920_1080_25fps.mp4",
         file_type: "video/mp4",
-        quality: "hd"
-      }
+        quality: "hd",
+      },
     ],
     width: 1920,
-    height: 1080
-  }
+    height: 1080,
+  },
 ];
 
 export async function GET(request: Request) {
@@ -113,7 +121,10 @@ export async function GET(request: Request) {
     if (client) {
       try {
         // Fetch curated photos
-        const photosRes = await client.photos.curated({ page, per_page: perPage });
+        const photosRes = await client.photos.curated({
+          page,
+          per_page: perPage,
+        });
         if (photosRes && "photos" in photosRes) {
           posts = (photosRes.photos as Photo[]).map((photo) => ({
             id: `photo-${photo.id}-${page}`,
@@ -135,14 +146,18 @@ export async function GET(request: Request) {
         }
 
         // Fetch trending videos
-        const videosRes = await client.videos.popular({ page, per_page: perPage });
+        const videosRes = await client.videos.popular({
+          page,
+          per_page: perPage,
+        });
         if (videosRes && "videos" in videosRes) {
           videoPosts = (videosRes.videos as Video[]).map((video) => {
-            const file = video.video_files.find(
-              (f) =>
-                (f.file_type as string) === "video/mp4" &&
-                (f.quality === "hd" || f.quality === "sd")
-            ) || video.video_files[0];
+            const file =
+              video.video_files.find(
+                (f) =>
+                  (f.file_type as string) === "video/mp4" &&
+                  (f.quality === "hd" || f.quality === "sd"),
+              ) || video.video_files[0];
 
             return {
               id: `video-${video.id}-${page}`,
@@ -164,7 +179,10 @@ export async function GET(request: Request) {
           });
         }
       } catch (err) {
-        console.error("Pexels API fetch failed, falling back to mock data", err);
+        console.error(
+          "Pexels API fetch failed, falling back to mock data",
+          err,
+        );
       }
     }
 
@@ -218,7 +236,8 @@ export async function GET(request: Request) {
     return NextResponse.json({ posts: combined });
   } catch (error) {
     console.error("API GET failed:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
